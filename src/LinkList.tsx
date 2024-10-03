@@ -38,7 +38,7 @@ export const LinkList: React.FC<LinkListProps> = ({ links, setEditingLink, delet
           <ListItem onClick={() => window.open(link.url, '_blank')}>
             <ListItemText
               primary={<Typography>{highlightText(link.name, searchQuery)}</Typography>}
-              secondary={<Typography component="span">{highlightText(link.url, searchQuery)}</Typography>}
+              secondary={<Typography noWrap>{highlightText(link.url, searchQuery)}</Typography>}
             />
             <Box onClick={(e) => e.stopPropagation()}>
               <IconButton edge="end" onClick={() => setEditingLink(link)}>
