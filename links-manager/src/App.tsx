@@ -60,6 +60,7 @@ const App: React.FC = () => {
   };
 
   const handleAccordionChange = (category: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    console.log('event', event);
     setExpanded(isExpanded ? [...expanded, category] : expanded.filter(cat => cat !== category));
     setShowAddLinkForm({ ...showAddLinkForm, [category]: false });
   };

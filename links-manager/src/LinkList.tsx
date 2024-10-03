@@ -1,7 +1,7 @@
 // src/LinkList.tsx
 import React from 'react';
 import { List, ListItem, ListItemText, IconButton, Box, Typography, Divider } from '@mui/material';
-import { Edit, Delete, Link as LinkIcon } from '@mui/icons-material';
+import { Edit, Delete} from '@mui/icons-material';
 
 interface Link {
   id: number;
