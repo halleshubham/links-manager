@@ -7,7 +7,8 @@ Working Demo: https://links-manager-ten.vercel.app/
 
 In two easy steps:
 
-```npm install
+```
+npm install
 npm run dev
 ```
 
