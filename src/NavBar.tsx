@@ -1,6 +1,7 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Button, Menu, MenuItem } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Menu, MenuItem, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const NavBar: React.FC = () => {
   const [anchorElManagers, setAnchorElManagers] = React.useState<null | HTMLElement>(null);
@@ -25,7 +26,9 @@ const NavBar: React.FC = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <img src="./utilify.png" alt="logo" style={{ width: 30, height: 30, marginRight: 10 }} />
+        <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+          <MenuIcon />
+        </IconButton>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Utilify
         </Typography>
