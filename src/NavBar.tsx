@@ -41,34 +41,34 @@ const NavBar: React.FC = () => {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        <ListItem button component={Link} to="/links-manager">
+        <ListItem component={Link} to="/links-manager">
           <ListItemText primary="Links Manager" />
         </ListItem>
-        <ListItem button component={Link} to="/tasks-manager">
+        <ListItem component={Link} to="/tasks-manager">
           <ListItemText primary="Tasks Manager" />
         </ListItem>
       </List>
       <Divider />
       <List>
-        <ListItem button component={Link} to="/image-compressor">
+        <ListItem component={Link} to="/image-compressor">
           <ListItemText primary="Image Compressor" />
         </ListItem>
-        <ListItem button component={Link} to="/pdf-compressor">
+        <ListItem component={Link} to="/pdf-compressor">
           <ListItemText primary="PDF Compressor" />
         </ListItem>
-        <ListItem button component={Link} to="/background-remover">
+        <ListItem component={Link} to="/background-remover">
           <ListItemText primary="Background Remover" />
         </ListItem>
       </List>
       <Divider />
       <List>
-        <ListItem button component={Link} to="/csv-to-excel">
+        <ListItem component={Link} to="/csv-to-excel">
           <ListItemText primary="CSV to Excel" />
         </ListItem>
-        <ListItem button component={Link} to="/excel-to-csv">
+        <ListItem component={Link} to="/excel-to-csv">
           <ListItemText primary="Excel to CSV" />
         </ListItem>
-        <ListItem button component={Link} to="/csv-to-vcf">
+        <ListItem component={Link} to="/csv-to-vcf">
           <ListItemText primary="CSV to VCF" />
         </ListItem>
       </List>
