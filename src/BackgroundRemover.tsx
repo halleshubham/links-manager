@@ -13,7 +13,8 @@ const BackgroundRemover: React.FC = () => {
       reader.onload = async (e) => {
         const base64Image = e.target?.result as string;
         try {
-          const result = await removeBackground(base64Image);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const result:any = await removeBackground(base64Image);
           setProcessedFile(result);
         } catch (error) {
           console.error(error);

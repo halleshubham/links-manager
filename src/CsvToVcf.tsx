@@ -13,6 +13,7 @@ const CsvToVcf: React.FC = () => {
       reader.onload = (e) => {
         const data = e.target?.result;
         const parsedData = parse(data as string, { header: true }).data;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const vcfData = parsedData.map((contact: any) => {
           return `BEGIN:VCARD
             VERSION:3.0
