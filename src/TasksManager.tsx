@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Container, Typography, Box, TextField, Button, List, ListItem, ListItemText,
   ListItemSecondaryAction, IconButton, Divider, Dialog, DialogActions, DialogContent,
-  DialogContentText, DialogTitle, Slide, Select, MenuItem
+  DialogContentText, DialogTitle, Slide, Select, MenuItem, Grid
 } from '@mui/material';
 import { Check, Delete, PriorityHigh, Schedule, LowPriority, NotInterested } from '@mui/icons-material';
 import { TransitionProps } from '@mui/material/transitions';
@@ -117,62 +117,70 @@ const TasksManager: React.FC = () => {
       <Typography variant="h4" gutterBottom>
         Tasks Manager
       </Typography>
-      <Box display="flex" mb={2}>
-        <TextField
-          label="New Task"
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-          fullWidth
-        />
-        <Select
-          value={taskType}
-          onChange={(e) => setTaskType(e.target.value as Task['type'])}
-          variant="outlined"
-          sx={{ ml: 2, minWidth: 200 }}
-        >
-          <MenuItem value="urgent-important">
-            <PriorityHigh color="error" /> Urgent & Important
-          </MenuItem>
-          <MenuItem value="not-urgent-important">
-            <Schedule color="primary" /> Not Urgent But Important
-          </MenuItem>
-          <MenuItem value="urgent-not-important">
-            <LowPriority color="secondary" /> Urgent But Not Important
-          </MenuItem>
-          <MenuItem value="neither">
-            <NotInterested color="disabled" /> Neither Urgent Nor Important
-          </MenuItem>
-        </Select>
-        <Button variant="contained" color="primary" onClick={addTask} sx={{ ml: 2 }}>
-          Add Task
-        </Button>
+      <Box mb={2}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={8}>
+            <TextField
+              label="New Task"
+              value={newTask}
+              onChange={(e) => setNewTask(e.target.value)}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Select
+              value={taskType}
+              onChange={(e) => setTaskType(e.target.value as Task['type'])}
+              variant="outlined"
+              fullWidth
+            >
+              <MenuItem value="urgent-important">
+                <PriorityHigh color="error" /> Urgent & Important
+              </MenuItem>
+              <MenuItem value="not-urgent-important">
+                <Schedule color="primary" /> Not Urgent But Important
+              </MenuItem>
+              <MenuItem value="urgent-not-important">
+                <LowPriority color="secondary" /> Urgent But Not Important
+              </MenuItem>
+              <MenuItem value="neither">
+                <NotInterested color="disabled" /> Neither Urgent Nor Important
+              </MenuItem>
+            </Select>
+          </Grid>
+          <Grid item xs={12}>
+            <Button variant="contained" color="primary" onClick={addTask} fullWidth>
+              Add Task
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
       <Divider />
-      <Box mt={2}>
+      <Box mt={2} sx={{ bgcolor: '#ffebee', p: 2, borderRadius: 1 }}>
         <Typography variant="h6" color="error">
           Urgent & Important Tasks
         </Typography>
         {renderTasks('urgent-important')}
       </Box>
-      <Box mt={2}>
+      <Box mt={2} sx={{ bgcolor: '#e3f2fd', p: 2, borderRadius: 1 }}>
         <Typography variant="h6" color="primary">
           Not Urgent But Important Tasks
         </Typography>
         {renderTasks('not-urgent-important')}
       </Box>
-      <Box mt={2}>
+      <Box mt={2} sx={{ bgcolor: '#f3e5f5', p: 2, borderRadius: 1 }}>
         <Typography variant="h6" color="secondary">
           Urgent But Not Important Tasks
         </Typography>
         {renderTasks('urgent-not-important')}
       </Box>
-      <Box mt={2}>
+      <Box mt={2} sx={{ bgcolor: '#f5f5f5', p: 2, borderRadius: 1 }}>
         <Typography variant="h6" color="textSecondary">
           Neither Urgent Nor Important Tasks
         </Typography>
         {renderTasks('neither')}
       </Box>
-      <Box mt={2}>
+      <Box mt={2} sx={{ bgcolor: '#e8f5e9', p: 2, borderRadius: 1 }}>
         <Typography variant="h6" color="success">
           Done Tasks
         </Typography>
