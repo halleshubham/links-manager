@@ -17,8 +17,9 @@ const NavBar: React.FC = () => {
   return (
     <AppBar position="static">
       <Toolbar>
+        <img src="./utilify.png" alt="logo" style={{ width: 30, height: 30, marginRight: 10 }} />
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Multi-App Manager
+            Utilify
         </Typography>
         <Button color="inherit" component={Link} to="/links-manager">
           Links Manager
