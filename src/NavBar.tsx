@@ -19,7 +19,7 @@ const NavBar: React.FC = () => {
       <Toolbar>
         <img src="./utilify.png" alt="logo" style={{ width: 30, height: 30, marginRight: 10 }} />
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Utilify
+          Utilify
         </Typography>
         <Button color="inherit" component={Link} to="/links-manager">
           Links Manager
@@ -51,6 +51,9 @@ const NavBar: React.FC = () => {
             CSV to VCF
           </MenuItem>
         </Menu>
+        <Button color="inherit" component={Link} to="/tasks-manager">
+          Tasks Manager
+        </Button>
       </Toolbar>
     </AppBar>
   );

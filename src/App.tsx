@@ -9,6 +9,7 @@ import BackgroundRemover from './BackgroundRemover';
 import CsvToExcel from './CsvToExcel';
 import ExcelToCsv from './ExcelToCsv';
 import CsvToVcf from './CsvToVcf';
+import TasksManager from './TasksManager';
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
         <Route path="/csv-to-excel" element={<CsvToExcel />} />
         <Route path="/excel-to-csv" element={<ExcelToCsv />} />
         <Route path="/csv-to-vcf" element={<CsvToVcf />} />
+        <Route path="/tasks-manager" element={<TasksManager />} />
       </Routes>
     </Router>
   );
