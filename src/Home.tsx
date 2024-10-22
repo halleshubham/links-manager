@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import LinkIcon from '@mui/icons-material/Link';
 import TaskIcon from '@mui/icons-material/Task';
 import ImageIcon from '@mui/icons-material/Image';
+import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import BackgroundIcon from '@mui/icons-material/Wallpaper';
 import CsvIcon from '@mui/icons-material/InsertDriveFile';
@@ -116,6 +117,16 @@ const Home: React.FC = () => {
             { label: 'CSV to VCF', path: '/csv-to-vcf' },
             { label: 'Excel to VCF', path: '/excel-to-vcf' },
           ])}
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Card>
+            <CardActionArea component={Link} to="/video-compressor">
+              <CardContent>
+                <VideoLibraryIcon fontSize="large" />
+                <Typography variant="h6">Video Compressor</Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
         </Grid>
       </Grid>
     </Container>
