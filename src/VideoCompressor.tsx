@@ -1,21 +1,36 @@
 // src/VideoCompressor.tsx
 import React, { useState } from 'react';
-import { Container, Typography, Button, Box, Input, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Container, Typography, Button, Box, Input, Select, MenuItem, FormControl, InputLabel, CircularProgress, SelectChangeEvent } from '@mui/material';
+import { FFmpeg } from '@ffmpeg/ffmpeg';
+import { fetchFile } from '@ffmpeg/util';
+
+const ffmpeg = new FFmpeg();
 
 const VideoCompressor: React.FC = () => {
   const [compressionRatio, setCompressionRatio] = useState<number>(20);
   const [compressedFile, setCompressedFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Implement video compression logic here
-      // For now, we'll just set the file as compressedFile
-      setCompressedFile(file);
+      setLoading(true);
+      if (!ffmpeg.loaded) {
+        await ffmpeg.load();
+      }
+      ffmpeg.writeFile('input.mp4', await fetchFile(file));
+      const outputFileName = 'output.mp4';
+      const compressionFactor = compressionRatio === 20 ? 5 : 2; // Adjust the factor based on the ratio
+      await ffmpeg.exec(['-i', 'input.mp4', '-b:v', `${compressionFactor}M`, outputFileName]);
+      const data = await ffmpeg.readFile(outputFileName);
+      const compressedBlob = new Blob([data], { type: 'video/mp4' });
+      const compressedFile = new File([compressedBlob], 'compressed-video.mp4', { type: 'video/mp4' });
+      setCompressedFile(compressedFile);
+      setLoading(false);
     }
   };
 
-  const handleCompressionRatioChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleCompressionRatioChange = (event: SelectChangeEvent<number>) => {
     setCompressionRatio(event.target.value as number);
   };
 
@@ -35,6 +50,7 @@ const VideoCompressor: React.FC = () => {
         </Select>
       </FormControl>
       <Input type="file" onChange={handleFileChange} />
+      {loading && <CircularProgress sx={{ mt: 2 }} />}
       {compressedFile && (
         <Box mt={2}>
           <Button

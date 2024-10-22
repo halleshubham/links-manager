@@ -1,10 +1,10 @@
 // src/ImageCompressor.tsx
 import React, { useState } from 'react';
-import { Container, Typography, Button, Box, Input, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Container, Typography, Button, Box, Input, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from '@mui/material';
 import imageCompression from 'browser-image-compression';
 
 const ImageCompressor: React.FC = () => {
-  const [compressionRatio, setCompressionRatio] = useState<number>(20);
+  const [compressionRatio, setCompressionRatio] = useState<number | undefined | "">(20);
   const [compressedFile, setCompressedFile] = useState<File | null>(null);
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,7 +24,7 @@ const ImageCompressor: React.FC = () => {
     }
   };
 
-  const handleCompressionRatioChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleCompressionRatioChange = (event: SelectChangeEvent<number>) => {
     setCompressionRatio(event.target.value as number);
   };
 
