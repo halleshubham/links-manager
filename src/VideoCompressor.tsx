@@ -2,9 +2,10 @@
 import React, { useState } from 'react';
 import { Container, Typography, Button, Box, Input, Select, MenuItem, FormControl, InputLabel, CircularProgress, SelectChangeEvent } from '@mui/material';
 import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { fetchFile } from '@ffmpeg/util';
+import { fetchFile, toBlobURL } from '@ffmpeg/util';
 
 const ffmpeg = new FFmpeg();
+const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
 
 const VideoCompressor: React.FC = () => {
   const [compressionRatio, setCompressionRatio] = useState<number>(20);
@@ -16,7 +17,11 @@ const VideoCompressor: React.FC = () => {
     if (file) {
       setLoading(true);
       if (!ffmpeg.loaded) {
-        await ffmpeg.load();
+        await ffmpeg.load({
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+            workerURL: await toBlobURL(`${baseURL}/ffmpeg-worker.esm.js`, 'text/javascript'),
+          });
       }
       ffmpeg.writeFile('input.mp4', await fetchFile(file));
       const outputFileName = 'output.mp4';
