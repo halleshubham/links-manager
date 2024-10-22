@@ -1,10 +1,10 @@
-// src/ExcelToCsv.tsx
+// src/ExcelToVcf.tsx
 import React, { useState } from 'react';
 import { Container, Typography, Button, Box, Input, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import * as XLSX from 'xlsx';
 
-const ExcelToCsv: React.FC = () => {
-  const [csvFile, setCsvFile] = useState<Blob | null>(null);
+const ExcelToVcf: React.FC = () => {
+  const [vcfFile, setVcfFile] = useState<Blob | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -13,9 +13,21 @@ const ExcelToCsv: React.FC = () => {
       reader.onload = (e) => {
         const data = e.target?.result;
         const workbook = XLSX.read(data, { type: 'binary' });
-        const csvBuffer = XLSX.write(workbook, { bookType: 'csv', type: 'array' });
-        const csvFile = new Blob([csvBuffer], { type: 'text/csv' });
-        setCsvFile(csvFile);
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const vcfData = jsonData.map((contact: any) => {
+          return `BEGIN:VCARD
+VERSION:3.0
+FN:${contact.Name}
+TEL:${contact['Phone Number']}
+EMAIL:${contact['Email ID']}
+END:VCARD`;
+        }).join('\n');
+        const vcfFile = new Blob([vcfData], { type: 'text/vcard' });
+        setVcfFile(vcfFile);
       };
       reader.readAsBinaryString(file);
     }
@@ -24,7 +36,7 @@ const ExcelToCsv: React.FC = () => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        Excel to CSV Converter
+        Excel to VCF Converter
       </Typography>
       <Typography variant="body1" gutterBottom>
         Please ensure your Excel file follows the structure below:
@@ -53,16 +65,16 @@ const ExcelToCsv: React.FC = () => {
         </Table>
       </TableContainer>
       <Input type="file" onChange={handleFileChange} />
-      {csvFile && (
+      {vcfFile && (
         <Box mt={2}>
           <Button
             variant="contained"
             color="primary"
-            href={URL.createObjectURL(csvFile)}
-            download="converted.csv"
+            href={URL.createObjectURL(vcfFile)}
+            download="contacts.vcf"
             sx={{ mt: 2 }}
           >
-            Download CSV File
+            Download VCF File
           </Button>
         </Box>
       )}
@@ -70,4 +82,4 @@ const ExcelToCsv: React.FC = () => {
   );
 };
 
-export default ExcelToCsv;
+export default ExcelToVcf;

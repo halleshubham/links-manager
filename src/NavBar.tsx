@@ -1,23 +1,15 @@
+// src/NavBar.tsx
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Menu, MenuItem, IconButton, Drawer, List, ListItem, ListItemText, Divider, useMediaQuery, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 
 const NavBar: React.FC = () => {
-  const [anchorElManagers, setAnchorElManagers] = React.useState<null | HTMLElement>(null);
   const [anchorElConversions, setAnchorElConversions] = React.useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const handleManagersClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorElManagers(event.currentTarget);
-  };
-
-  const handleManagersClose = () => {
-    setAnchorElManagers(null);
-  };
 
   const handleConversionsClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorElConversions(event.currentTarget);
@@ -41,35 +33,38 @@ const NavBar: React.FC = () => {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        <ListItem component={Link} to="/links-manager">
+        <ListItem button component={Link} to="/links-manager">
           <ListItemText primary="Links Manager" />
         </ListItem>
-        <ListItem component={Link} to="/tasks-manager">
+        <ListItem button component={Link} to="/tasks-manager">
           <ListItemText primary="Tasks Manager" />
         </ListItem>
       </List>
       <Divider />
       <List>
-        <ListItem component={Link} to="/image-compressor">
+        <ListItem button component={Link} to="/image-compressor">
           <ListItemText primary="Image Compressor" />
         </ListItem>
-        <ListItem component={Link} to="/pdf-compressor">
+        <ListItem button component={Link} to="/pdf-compressor">
           <ListItemText primary="PDF Compressor" />
         </ListItem>
-        <ListItem component={Link} to="/background-remover">
+        <ListItem button component={Link} to="/background-remover">
           <ListItemText primary="Background Remover" />
         </ListItem>
       </List>
       <Divider />
       <List>
-        <ListItem component={Link} to="/csv-to-excel">
+        <ListItem button component={Link} to="/csv-to-excel">
           <ListItemText primary="CSV to Excel" />
         </ListItem>
-        <ListItem component={Link} to="/excel-to-csv">
+        <ListItem button component={Link} to="/excel-to-csv">
           <ListItemText primary="Excel to CSV" />
         </ListItem>
-        <ListItem component={Link} to="/csv-to-vcf">
+        <ListItem button component={Link} to="/csv-to-vcf">
           <ListItemText primary="CSV to VCF" />
+        </ListItem>
+        <ListItem button component={Link} to="/excel-to-vcf">
+          <ListItemText primary="Excel to VCF" />
         </ListItem>
       </List>
     </div>
@@ -84,27 +79,17 @@ const NavBar: React.FC = () => {
               <MenuIcon />
             </IconButton>
           )}
-          <img src="./utilify.png" alt="logo" style={{ width: 30, height: 30, marginRight: 10 }} />
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" sx={{ flexGrow: 1 }} component={Link} to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
             Utilify
           </Typography>
           {!isMobile && (
             <>
-              <Button color="inherit" onClick={handleManagersClick}>
-                Your Managers
+              <Button color="inherit" component={Link} to="/links-manager">
+                Links Manager
               </Button>
-              <Menu
-                anchorEl={anchorElManagers}
-                open={Boolean(anchorElManagers)}
-                onClose={handleManagersClose}
-              >
-                <MenuItem component={Link} to="/links-manager" onClick={handleManagersClose}>
-                  Links Manager
-                </MenuItem>
-                <MenuItem component={Link} to="/tasks-manager" onClick={handleManagersClose}>
-                  Tasks Manager
-                </MenuItem>
-              </Menu>
+              <Button color="inherit" component={Link} to="/tasks-manager">
+                Tasks Manager
+              </Button>
               <Button color="inherit" component={Link} to="/image-compressor">
                 Image Compressor
               </Button>
@@ -130,6 +115,9 @@ const NavBar: React.FC = () => {
                 </MenuItem>
                 <MenuItem component={Link} to="/csv-to-vcf" onClick={handleConversionsClose}>
                   CSV to VCF
+                </MenuItem>
+                <MenuItem component={Link} to="/excel-to-vcf" onClick={handleConversionsClose}>
+                  Excel to VCF
                 </MenuItem>
               </Menu>
             </>

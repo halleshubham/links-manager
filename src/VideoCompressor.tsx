@@ -1,23 +1,17 @@
-// src/PdfCompressor.tsx
+// src/VideoCompressor.tsx
 import React, { useState } from 'react';
 import { Container, Typography, Button, Box, Input, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import { PDFDocument } from 'pdf-lib';
 
-const PdfCompressor: React.FC = () => {
+const VideoCompressor: React.FC = () => {
   const [compressionRatio, setCompressionRatio] = useState<number>(20);
   const [compressedFile, setCompressedFile] = useState<File | null>(null);
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      try {
-        const pdfDoc = await PDFDocument.load(await file.arrayBuffer());
-        const compressedPdfBytes = await pdfDoc.save({ useObjectStreams: compressionRatio === 20 });
-        const compressedFile = new File([compressedPdfBytes], 'compressed.pdf', { type: 'application/pdf' });
-        setCompressedFile(compressedFile);
-      } catch (error) {
-        console.error(error);
-      }
+      // Implement video compression logic here
+      // For now, we'll just set the file as compressedFile
+      setCompressedFile(file);
     }
   };
 
@@ -28,10 +22,10 @@ const PdfCompressor: React.FC = () => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        PDF Compressor
+        Video Compressor
       </Typography>
       <Typography variant="body1" gutterBottom>
-        Compress your PDF files easily with our PDF Compressor. Choose a compression ratio and upload your PDF file.
+        Compress your videos easily with our Video Compressor. Choose a compression ratio and upload your video file.
       </Typography>
       <FormControl fullWidth sx={{ mb: 2 }}>
         <InputLabel>Compression Ratio</InputLabel>
@@ -47,10 +41,10 @@ const PdfCompressor: React.FC = () => {
             variant="contained"
             color="primary"
             href={URL.createObjectURL(compressedFile)}
-            download="compressed.pdf"
+            download="compressed-video.mp4"
             sx={{ mt: 2 }}
           >
-            Download Compressed PDF
+            Download Compressed Video
           </Button>
         </Box>
       )}
@@ -58,4 +52,4 @@ const PdfCompressor: React.FC = () => {
   );
 };
 
-export default PdfCompressor;
+export default VideoCompressor;
