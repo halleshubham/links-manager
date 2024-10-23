@@ -1,42 +1,37 @@
 // src/VideoCompressor.tsx
 import React, { useState } from 'react';
 import { Container, Typography, Button, Box, Input, Select, MenuItem, FormControl, InputLabel, CircularProgress, SelectChangeEvent } from '@mui/material';
-import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { fetchFile, toBlobURL } from '@ffmpeg/util';
+import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+import coreURL from '@ffmpeg/core?url';
 
-const ffmpeg = new FFmpeg();
-const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
+const ffmpeg = createFFmpeg({ log: true, corePath: coreURL });
 
 const VideoCompressor: React.FC = () => {
   const [compressionRatio, setCompressionRatio] = useState<number>(20);
   const [compressedFile, setCompressedFile] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  //const videoRef = React.useRef(null);
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setLoading(true);
-      if (!ffmpeg.loaded) {
-        await ffmpeg.load({
-            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
-            workerURL: await toBlobURL(`${baseURL}/ffmpeg-worker.esm.js`, 'text/javascript'),
-          });
+      if (!ffmpeg.isLoaded()) {
+        await ffmpeg.load();
       }
-      ffmpeg.writeFile('input.mp4', await fetchFile(file));
+      ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(file));
       const outputFileName = 'output.mp4';
-      const compressionFactor = compressionRatio === 20 ? 5 : 2; // Adjust the factor based on the ratio
-      await ffmpeg.exec(['-i', 'input.mp4', '-b:v', `${compressionFactor}M`, outputFileName]);
-      const data = await ffmpeg.readFile(outputFileName);
-      const compressedBlob = new Blob([data], { type: 'video/mp4' });
-      const compressedFile = new File([compressedBlob], 'compressed-video.mp4', { type: 'video/mp4' });
-      setCompressedFile(compressedFile);
+      const compressionFactor = compressionRatio === 20 ? 5 : 2; // Adjust the factor based on the ratio - -vf scale=1280:720 -r 24 -c:v libx265 -crf 28
+      //await ffmpeg.run('-i', 'input.mp4','-vf', 'scale=480:270', '-r', '24', '-c:v', 'libx265', '-crf', '28', '-b:v', `${compressionFactor}00k`, '-b:a', '64k','-c:a', 'aac', 'output_compressed.mp4', outputFileName, '-s', 'ASSERTIONS=1'); //ffmpeg -i input.mp4 -b:v 1000k -b:a 128k output_compressed.mp4
+      await ffmpeg.run('-i', 'input.mp4', '-c:v', 'libx264', '-r', '24', '-vf', 'scale=640:360', '-b:v', `${compressionFactor}00k`, '-b:a', '64k','-c:a', 'aac','-crf', '28', 'output_compressed.mp4', outputFileName, '-s', 'ASSERTIONS=1'); //ffmpeg -i input.mp4 -b:v 1000k -b:a 128k output_compressed.mp4
+      const data = ffmpeg.FS('readFile', 'output_compressed.mp4');
+      setCompressedFile(new File([data.buffer], 'compressed-video.mp4', { type: 'video/mp4' }));
       setLoading(false);
     }
   };
 
   const handleCompressionRatioChange = (event: SelectChangeEvent<number>) => {
-    setCompressionRatio(event.target.value as number);
+    setCompressionRatio(Number(event.target.value));
   };
 
   return (
